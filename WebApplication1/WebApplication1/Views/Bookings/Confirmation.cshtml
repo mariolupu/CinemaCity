@@ -1,0 +1,27 @@
+﻿@model WebApplication1.Models.Booking
+
+@{
+    ViewData["Title"] = "Booking Confirmed";
+}
+
+<div class="container my-5 text-center">
+    <div class="card border-0 shadow-lg p-5 rounded-4 bg-white w-75 mx-auto">
+        <div class="display-1 text-success mb-3">🎉</div>
+        <h1 class="fw-bold text-dark mb-2">Booking Confirmed Successfully!</h1>
+        <p class="text-muted fs-5 mb-4">Thank you for booking with us. Your seats are reserved.</p>
+
+        <div class="bg-light p-4 rounded-4 text-start mb-4 shadow-sm w-75 mx-auto">
+            <p class="mb-2"><strong>Movie:</strong> @Model.Screening?.Movie?.Title</p>
+            <p class="mb-2"><strong>Showtime:</strong> @Model.Screening?.Showtime.ToString("yyyy-MM-dd HH:mm")</p>
+            <p class="mb-2"><strong>Hall:</strong> @Model.Screening?.HallName</p>
+            <p class="mb-2"><strong>Reserved Seats:</strong> <span class="badge bg-danger fs-6">@Model.SeatNumbers</span></p>
+            <p class="mb-0"><strong>Booking Date:</strong> @Model.BookingDate.ToString("yyyy-MM-dd HH:mm")</p>
+        </div>
+
+        <div>
+            <a asp-controller="Movies" asp-action="Index" class="btn btn-dark btn-lg rounded-pill px-4 shadow-sm">
+                ← Back to Movies Catalog
+            </a>
+        </div>
+    </div>
+</div>

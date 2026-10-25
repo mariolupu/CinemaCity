@@ -1,0 +1,156 @@
+﻿@model WebApplication1.Models.Screening
+
+@{
+    ViewData["Title"] = "Book Seats - " + Model.Movie?.Title;
+    var bookedSeats = ViewBag.BookedSeats as List<string> ?? new List<string>();
+}
+
+<div class="container my-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="fw-bold mb-1">🎟️ Cinema Seat Reservation</h1>
+            <p class="text-muted mb-4">
+                Movie: <span class="text-dark fw-semibold">@Model.Movie?.Title</span> |
+                Showtime: <span class="text-danger fw-semibold">@Model.Showtime.ToString("yyyy-MM-dd HH:mm")</span> |
+                <span>@Model.HallName</span>
+            </p>
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger w-50 mx-auto">@TempData["Error"]</div>
+            }
+
+            <!-- Ecranul cinematografului -->
+            <div class="screen-container my-4">
+                <div class="screen">CINEMA SCREEN</div>
+            </div>
+
+            <!-- Legendă -->
+            <div class="d-flex justify-content-center gap-4 mb-4 text-muted small">
+                <div><span class="badge bg-secondary rounded p-2 me-1">&nbsp;&nbsp;</span> Available</div>
+                <div><span class="badge bg-danger rounded p-2 me-1">&nbsp;&nbsp;</span> Selected</div>
+                <div><span class="badge bg-dark rounded p-2 me-1">&nbsp;&nbsp;</span> Occupied</div>
+            </div>
+
+            <!-- Harta Realistă de Cinema (Centrată și trapezoidală) -->
+            <form asp-action="Book" method="post" id="bookingForm">
+                <input type="hidden" name="screeningId" value="@Model.Id" />
+                <input type="hidden" id="selectedSeatsInput" name="selectedSeats" />
+
+                <div class="seat-grid-container mx-auto mb-4 p-4 bg-white rounded-4 shadow-sm border d-inline-block text-center">
+
+                    <!-- Rândul A (Față - 8 locuri) -->
+                    @Html.Raw(RenderSeatRow("A", 8, bookedSeats))
+                    <!-- Rândul B (10 locuri) -->
+                    @Html.Raw(RenderSeatRow("B", 10, bookedSeats))
+                    <!-- Rândul C (12 locuri) -->
+                    @Html.Raw(RenderSeatRow("C", 12, bookedSeats))
+                    <!-- Rândul D (14 locuri) -->
+                    @Html.Raw(RenderSeatRow("D", 14, bookedSeats))
+                    <!-- Rândul E (14 locuri) -->
+                    @Html.Raw(RenderSeatRow("E", 14, bookedSeats))
+                    <!-- Rândul F (Spate - 16 locuri) -->
+                    @Html.Raw(RenderSeatRow("F", 16, bookedSeats))
+
+                </div>
+
+                <!-- Panou de confirmare centrat -->
+                <div class="card border-0 shadow-sm p-4 w-75 mx-auto rounded-4 bg-light mb-4 text-center">
+                    <h5>Selected Seats: <span id="selectedSeatsText" class="text-danger fw-bold">None</span></h5>
+                    <button type="submit" class="btn btn-danger btn-lg rounded-pill px-5 fw-bold mt-2 shadow-sm" onclick="prepareSubmit()">
+                        Confirm Booking 🚀
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@functions {
+    // Metodă helper pentru a genera rânduri cu număr diferit de scaune și culoar pe mijloc
+    string RenderSeatRow(string rowLetter, int totalSeats, List<string> bookedSeats)
+    {
+        var html = $"<div class='d-flex align-items-center justify-content-center mb-2 gap-1'>";
+        html += $"<span class='fw-bold text-muted me-3' style='width: 25px;'>{rowLetter}</span>";
+
+        int middle = totalSeats / 2;
+        for (int i = 1; i <= totalSeats; i++)
+        {
+            var seatId = $"{rowLetter}{i}";
+            var isBooked = bookedSeats.Contains(seatId);
+
+            // Adăugați culoar pe mijloc
+            if (i == middle + 1)
+            {
+                html += "<div style='width: 35px;'></div>";
+            }
+
+            if (isBooked)
+            {
+                html += $"<button type='button' class='btn btn-dark seat-btn disabled' disabled title='Occupied'>{i}</button>";
+            }
+            else
+            {
+                html += $"<button type='button' class='btn btn-outline-secondary seat-btn' data-seat='{seatId}' onclick='toggleSeat(this)'>{i}</button>";
+            }
+        }
+        html += "</div>";
+        return html;
+    }
+}
+
+<style>
+    .screen-container {
+        perspective: 500px;
+    }
+
+    .screen {
+        background: linear-gradient(to bottom, #212529, #6c757d);
+        color: white;
+        font-weight: bold;
+        letter-spacing: 4px;
+        padding: 10px;
+        width: 60%;
+        margin: 0 auto;
+        border-radius: 6px;
+        transform: rotateX(-20deg);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+
+    .seat-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        border-radius: 6px !important;
+        transition: all 0.2s ease;
+    }
+
+        .seat-btn.selected {
+            background-color: #dc3545 !important;
+            color: white !important;
+            border-color: #dc3545 !important;
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.4);
+        }
+</style>
+
+<script>
+    let selectedSeats = [];
+
+    function toggleSeat(button) {
+        let seat = button.getAttribute("data-seat");
+        if (selectedSeats.includes(seat)) {
+            selectedSeats = selectedSeats.filter(s => s !== seat);
+            button.classList.remove("selected");
+        } else {
+            selectedSeats.push(seat);
+            button.classList.add("selected");
+        }
+        document.UnsafeSetSelectedText ? "" : document.getElementById("selectedSeatsText").innerText = selectedSeats.length > 0 ? selectedSeats.join(", ") : "None";
+    }
+
+    function prepareSubmit() {
+        document.getElementById("selectedSeatsInput").value = selectedSeats.join(",");
+    }
+</script>

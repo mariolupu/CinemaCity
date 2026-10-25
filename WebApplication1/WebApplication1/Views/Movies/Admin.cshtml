@@ -1,0 +1,73 @@
+﻿@model IEnumerable<WebApplication1.Models.Movie>
+
+@{
+    ViewData["Title"] = "Admin Dashboard - Movies";
+}
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold text-dark">⚙️ Admin Dashboard</h1>
+            <p class="text-muted">Manage cinema movie catalog (Add, Edit, Delete).</p>
+        </div>
+        <div>
+            <a asp-action="Create" class="btn btn-success shadow-sm rounded-pill px-4">
+                + Add New Movie
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary shadow-sm rounded-pill px-3 ms-2">
+                View Public Site
+            </a>
+
+            <a asp-controller="Screenings" asp-action="Index" class="btn btn-dark rounded-pill px-4 shadow-sm">
+                📅 Manage Showtimes & Halls
+            </a>
+        </div>
+    </div>
+
+    <!-- Plasă de siguranță: Verificăm dacă Modelul nu este null -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="card-body p-0">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="ps-4">Poster</th>
+                            <th>Title</th>
+                            <th>Genre</th>
+                            <th>Duration</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 py-3">
+                                    <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://picsum.photos/50/50" : item.ImageUrl)"
+                                         class="rounded" style="width: 50px; height: 50px; object-fit: cover;" />
+                                </td>
+                                <td class="fw-bold text-dark">@item.Title</td>
+                                <td><span class="badge bg-secondary">@item.Genre</span></td>
+                                <td>@item.Duration min</td>
+                                <td class="text-end pe-4">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info me-1">Details</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center p-4 rounded-4 shadow-sm">
+            <h4>No movies found in the database.</h4>
+            <p class="text-muted mb-3">Click the button below to add your first movie.</p>
+            <a asp-action="Create" class="btn btn-primary rounded-pill px-4">+ Add New Movie</a>
+        </div>
+    }
+</div>
