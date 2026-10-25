@@ -12,5 +12,7 @@ namespace WebApplication1.Data
         public DbSet<Booking> Bookings { get; set; }
 
         public DbSet<Screening> Screenings { get; set; }
+
+        public DbSet<Promotion> Promotions { get; set; }
     }
 }

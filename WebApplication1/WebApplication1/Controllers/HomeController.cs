@@ -8,7 +8,8 @@ namespace WebApplication1.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            // Redirecționează automat vizitatorii direct spre catalogul de filme cu carusel și oferte
+            return RedirectToAction("Index", "Movies");
         }
 
         public IActionResult Privacy()

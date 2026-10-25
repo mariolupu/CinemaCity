@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 using WebApplication1.Models;
+using WebApplication1.Services;
 
 public class MoviesController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly IMovieService _movieService;
 
-    public MoviesController(ApplicationDbContext context)
+    public MoviesController(ApplicationDbContext context, IMovieService movieService)
     {
         _context = context;
+        _movieService = movieService;
     }
 
     // Barem: Nota 2 - Panou de management pentru administrator
@@ -66,14 +69,28 @@ public class MoviesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Create([Bind("Id,Title,Genre,Description,Duration,ImageUrl")] Movie movie)
+    public async Task<IActionResult> Create([Bind("Id,Title,Genre,Duration,Description,ImageUrl")] Movie movie)
     {
-        if (ModelState.IsValid)
+        try
         {
-            _context.Add(movie);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                _context.Add(movie);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
         }
+        catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+        {
+            // Excepție tip 1: Erori legate direct de baza de date (SQL / Duplicat / Constrângeri)
+            ModelState.AddModelError("", "Error database: " + dbEx.Message);
+        }
+        catch (Exception ex)
+        {
+            // Excepție tip 2: Orice altă eroare neprevăzută generală
+            ModelState.AddModelError("", "error123: " + ex.Message);
+        }
+
         return View(movie);
     }
 

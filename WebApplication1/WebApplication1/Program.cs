@@ -16,6 +16,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+// Înregistrăm interfața și serviciul în containerul de dependențe
+builder.Services.AddScoped<WebApplication1.Services.IMovieService, WebApplication1.Services.MovieService>();
+
 var app = builder.Build();
 
 //using (var scope = app.Services.CreateScope())
