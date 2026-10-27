@@ -1,12 +1,36 @@
-﻿namespace WebApplication1.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebApplication1.Models
 {
     public class Promotion
     {
         public int Id { get; set; }
-        public string Title { get; set; }           // Exemplu: "Meniul Studentului 🍿"
-        public string Description { get; set; }     // Exemplu: "Ia-ți popcorn mediu și suc la doar 15 lei pe baza carnetului!"
-        public string BadgeText { get; set; }       // Exemplu: "🔥 OFERTĂ SPECIALĂ"
-        public string ImageUrl { get; set; }        // Link-ul imaginii de fundal
-        public bool IsActive { get; set; } = true;  // Să fie vizibil în carusel sau nu
+
+        [Required]
+        [Display(Name = "Badge / Type")]
+        public string BadgeText { get; set; } // e.g. "🎓 STUDENT / YOUTH", "🔥 PROMO DAY", "✨ VIP"
+
+        [Required]
+        public string Title { get; set; } // e.g. "Student Menu: Popcorn + Soda"
+
+        public string Subtitle { get; set; } // e.g. "Valid on weekdays with student ID"
+
+        [Required]
+        public string Description { get; set; } // e.g. "Show your student card at the bar to claim 20% off!"
+
+        [Display(Name = "Discount Percentage")]
+        public int? DiscountPercentage { get; set; } // e.g. 20 (for 20%)
+
+        [Display(Name = "Fixed Price (RON)")]
+        public decimal? FixedPrice { get; set; } // e.g. 15 (for 15 LEI)
+
+        [Display(Name = "Applicable Days")]
+        public string ApplicableDays { get; set; } // e.g. "Monday, Tuesday" or "Weekend"
+
+        [Required]
+        [Display(Name = "Image URL")]
+        public string ImageUrl { get; set; }
+
+        public bool IsActive { get; set; } = true;
     }
 }

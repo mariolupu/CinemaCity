@@ -31,8 +31,8 @@ public class MoviesController : Controller
     // ??? Barem: Nota 2 - Catalogul public de filme cu verificare de siguranță pentru Model
     public async Task<IActionResult> Index()
     {
-        // Verificăm dacă contextul și setul de filme sunt inițializate, altfel trimitem o listă goală
-        var movies = _context.Movies != null ? await _context.Movies.ToListAsync() : new List<Movie>();
+        var movies = await _movieService.GetAllMoviesAsync();
+        ViewBag.Promotions = await _context.Promotions.Where(p => p.IsActive).ToListAsync();
         return View(movies);
     }
 
@@ -117,7 +117,7 @@ public class MoviesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Genre,Description,Duration,ImageUrl")] Movie movie)
+    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Genre,Description,Duration,ImageUrl,,IsFeatured")] Movie movie)
     {
         if (id != movie.Id)
         {

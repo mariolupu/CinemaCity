@@ -1,0 +1,82 @@
+﻿@model WebApplication1.Models.Promotion
+
+@{
+    ViewData["Title"] = "Create Promotion";
+}
+
+<div class="container my-4" style="max-width: 700px;">
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+        <h2 class="fw-bold text-dark mb-4">✨ Create New Promotion / Offer</h2>
+
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="BadgeText" class="form-label fw-semibold">Badge Text (e.g. 🎓 STUDENT DISCOUNT)</label>
+                <input asp-for="BadgeText" class="form-control rounded-pill px-3" placeholder="e.g. 🔥 SPECIAL OFFER" />
+                <span asp-validation-for="BadgeText" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label fw-semibold">Title</label>
+                <input asp-for="Title" class="form-control rounded-pill px-3" placeholder="e.g. Student Menu: Popcorn & Soda" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Subtitle" class="form-label fw-semibold">Subtitle (Optional)</label>
+                <input asp-for="Subtitle" class="form-control rounded-pill px-3" placeholder="e.g. Valid on weekdays with student card" />
+                <span asp-validation-for="Subtitle" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label fw-semibold">Description</label>
+                <textarea asp-for="Description" class="form-control rounded-3 p-3" rows="3" placeholder="Show your student ID at the bar to claim your discount..."></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="DiscountPercentage" class="form-label fw-semibold">Discount Percentage (%)</label>
+                    <input asp-for="DiscountPercentage" class="form-control rounded-pill px-3" placeholder="e.g. 20" />
+                    <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FixedPrice" class="form-label fw-semibold">Fixed Price (RON)</label>
+                    <input asp-for="FixedPrice" class="form-control rounded-pill px-3" placeholder="e.g. 15" />
+                    <span asp-validation-for="FixedPrice" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ApplicableDays" class="form-label fw-semibold">Applicable Days (e.g. Monday, Tuesday or Weekend)</label>
+                <input asp-for="ApplicableDays" class="form-control rounded-pill px-3" placeholder="e.g. Every Wednesday" />
+                <span asp-validation-for="ApplicableDays" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="ImageUrl" class="form-label fw-semibold">Background Image URL</label>
+                <input asp-for="ImageUrl" class="form-control rounded-pill px-3" placeholder="https://images.unsplash.com/..." />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+
+            <div class="form-check mb-4">
+                <input class="form-check-input" asp-for="IsActive" checked />
+                <label class="form-check-label fw-semibold" asp-for="IsActive">
+                    Active (Show in Carusel)
+                </label>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">Back to List</a>
+                <button type="submit" class="btn btn-danger rounded-pill px-5 fw-bold shadow-sm">Save Promotion</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

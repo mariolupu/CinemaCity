@@ -4,11 +4,11 @@
     ViewData["Title"] = Model.Title + " - Details";
 }
 
-<div class="container my-5">
+<div class="container my-5 text-light">
     <div class="row g-5 align-items-center movie-detail-container">
         <!-- Posterul filmului -->
         <div class="col-md-4 text-center">
-            <div class="poster-wrapper shadow-lg rounded-4 overflow-hidden">
+            <div class="poster-wrapper shadow-lg rounded-4 overflow-hidden border border-secondary border-opacity-25">
                 <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://picsum.photos/400/600" : Model.ImageUrl)"
                      class="img-fluid w-100 movie-poster-img" alt="@Model.Title" />
             </div>
@@ -16,44 +16,53 @@
 
         <!-- Informații și Synopsis -->
         <div class="col-md-8">
-            <span class="badge bg-danger px-3 py-2 rounded-pill mb-3 text-uppercase fw-semibold tracking-wide">@Model.Genre</span>
-            <h1 class="display-4 fw-bold text-dark mb-3">@Model.Title</h1>
+            <span class="badge badge-cinema-orange px-3 py-2 rounded-pill mb-3 text-uppercase fw-semibold tracking-wide">@Model.Genre</span>
+            <h1 class="display-4 fw-bold text-white mb-3">@Model.Title</h1>
 
-            <div class="d-flex align-items-center text-muted mb-4 fs-5">
+            <div class="d-flex align-items-center text-secondary mb-4 fs-5">
                 @{
                     int hours = Model.Duration / 60;
                     int minutes = Model.Duration % 60;
                     string formattedDuration = hours > 0 ? $"{hours}h {minutes}min" : $"{minutes}min";
                 }
-                <span class="me-4"><i class="bi bi-clock me-2"></i><strong>@formattedDuration</strong></span>
+                <span class="me-4 text-light"><i class="bi bi-clock me-2 text-cinema-orange"></i><strong>@formattedDuration</strong></span>
             </div>
 
-            <div class="card border-0 bg-light p-4 rounded-4 mb-4 shadow-sm">
-                <h5 class="fw-bold text-dark mb-2">📖 Synopsis</h5>
+            <!-- Synopsis Card în temă Dark -->
+            <div class="card border-0 cinema-card-inner p-4 rounded-4 mb-4 shadow-sm">
+                <h5 class="fw-bold text-white mb-2">📖 Synopsis</h5>
                 <p class="text-secondary mb-0 lh-lg">
                     @(string.IsNullOrEmpty(Model.Description) ? "No description available for this movie yet." : Model.Description)
                 </p>
             </div>
 
             <!-- Proiecții (Ore disponibile) pentru rezervare -->
-            <div class="card border-0 bg-white p-4 rounded-4 mb-4 shadow-sm border">
-                <h5 class="fw-bold text-dark mb-3">🕒 Select Showtime & Book Seats</h5>
+            <div class="card border-0 cinema-card-inner p-4 rounded-4 mb-4 shadow-sm">
+                <h5 class="fw-bold text-white mb-3">🕒 Select Showtime & Book Seats</h5>
                 <div class="d-flex gap-3 flex-wrap">
                     @if (ViewBag.Screenings != null)
                     {
-                        foreach (var screening in ViewBag.Screenings as List<WebApplication1.Models.Screening>)
+                        var screenings = ViewBag.Screenings as List<WebApplication1.Models.Screening>;
+                        if (screenings != null && screenings.Any())
                         {
-                            <a asp-controller="Bookings" asp-action="Book" asp-route-id="@screening.Id"
-                               class="btn btn-outline-danger px-4 py-2 rounded-pill fw-semibold shadow-sm pulse-btn">
-                                🎟️ @screening.HallName — @screening.Showtime.ToString("dd MMM, HH:mm")
-                            </a>
+                            foreach (var screening in screenings)
+                            {
+                                <a asp-controller="Bookings" asp-action="Book" asp-route-id="@screening.Id"
+                                   class="btn btn-outline-cinema px-4 py-2 rounded-pill fw-semibold shadow-sm pulse-btn">
+                                    🎟️ @screening.HallName — @screening.Showtime.ToString("dd MMM, HH:mm")
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-secondary fst-italic mb-0">No showtimes available for this movie at the moment.</p>
                         }
                     }
                 </div>
             </div>
 
             <div>
-                <a asp-action="Index" class="btn btn-outline-dark btn-lg px-4 rounded-pill">
+                <a asp-action="Index" class="btn btn-outline-light btn-lg px-4 rounded-pill">
                     ← Back to Catalog
                 </a>
             </div>
@@ -62,6 +71,33 @@
 </div>
 
 <style>
+    .text-cinema-orange {
+        color: #ff6b00 !important;
+    }
+
+    .badge-cinema-orange {
+        background-color: #ff6b00;
+        color: #fff;
+    }
+
+    .cinema-card-inner {
+        background-color: #161920 !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .btn-outline-cinema {
+        color: #ff6b00;
+        border-color: #ff6b00;
+        background-color: transparent;
+        transition: all 0.3s ease;
+    }
+
+        .btn-outline-cinema:hover {
+            background-color: #ff6b00 !important;
+            color: white !important;
+            border-color: #ff6b00;
+        }
+
     .movie-poster-img {
         transition: transform 0.5s ease;
         max-height: 500px;
@@ -78,7 +114,5 @@
 
         .pulse-btn:hover {
             transform: translateY(-3px);
-            background-color: #dc3545 !important;
-            color: white !important;
         }
 </style>

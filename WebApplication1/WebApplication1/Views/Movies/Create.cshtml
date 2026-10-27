@@ -42,6 +42,14 @@
                 <input asp-for="ImageUrl" class="form-control" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" asp-for="IsFeatured" />
+                <label class="form-check-label fw-semibold" asp-for="IsFeatured">
+                    ⭐ Show in Main Carousel (Featured Movie)
+                </label>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

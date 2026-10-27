@@ -11,5 +11,7 @@ namespace WebApplication1.Models
 
         // Câmpul nou pentru descriere
         public string? Description { get; set; }
+
+        public bool IsFeatured { get; set; } = false;
     }
 }

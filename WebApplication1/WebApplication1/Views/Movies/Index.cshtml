@@ -1,106 +1,125 @@
 @model IEnumerable<WebApplication1.Models.Movie>
 
 @{
-    ViewData["Title"] = "Movies Catalog";
+    ViewData["Title"] = "Now Playing";
     var movieList = Model.ToList();
+    var featuredMovies = movieList.Where(m => m.IsFeatured).ToList();
+    var promotions = ViewBag.Promotions as List<WebApplication1.Models.Promotion> ?? new List<WebApplication1.Models.Promotion>();
+
+    int totalSlides = promotions.Count + featuredMovies.Count;
 }
 
-<!-- Barem: Nota 2 & 4 - Interfață grafică modernă, dinamică și carusel stil Cinema City -->
 <div class="container my-4">
 
-    <!-- Carusel Stil Cinema City (Oferte + Filme din BD) -->
-    <div id="cinemaCarousel" class="carousel slide mb-5 shadow-sm rounded-4 overflow-hidden" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#cinemaCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#cinemaCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            @if (movieList.Count > 0)
-            {
-                <button type="button" data-bs-target="#cinemaCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            }
-        </div>
+    @if (totalSlides > 0)
+    {
+        <!-- Cinema City Style Carousel -->
+        <div id="cinemaCarousel" class="carousel slide mb-5 shadow-lg rounded-4 overflow-hidden" data-bs-ride="carousel" data-bs-interval="6000">
 
-        <div class="carousel-inner">
-
-            <!-- SLIDE 1: Meniul Studentului -->
-            <div class="carousel-item active">
-                <img src="https://images.unsplash.com/photo-1585647347384-2593bc35786b?q=80&w=1200&auto=format&fit=crop" class="d-block w-100 carousel-img" alt="Student Offer">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded-4 p-4 text-start shadow">
-                    <span class="badge bg-warning text-dark mb-2 fw-bold px-3 py-2">🍿 STUDENT & YOUTH DISCOUNT</span>
-                    <h2 class="fw-bold text-white display-6">Meniul Studentului: Popcorn + Suc Moca!</h2>
-                    <p class="text-light fs-6 mb-3">Arată carnetul de student la barul cinematografului și primești <strong>20% reducere</strong> la orice bilet + refill gratuit la popcorn!</p>
-                    <a href="#movies-grid" class="btn btn-warning btn-sm rounded-pill px-4 fw-bold shadow-sm">
-                        Vezi Filmele & Rezervă Locul
-                    </a>
-                </div>
+            <!-- Indicators: Gri vizibil, Alb pur activ -->
+            <div class="carousel-indicators">
+                @{
+                    int slideIndex = 0;
+                }
+                @foreach (var promo in promotions)
+                {
+                    <button type="button" data-bs-target="#cinemaCarousel" data-bs-slide-to="@slideIndex" class="@(slideIndex == 0 ? "active" : "")" aria-label="Slide @(slideIndex + 1)"></button>
+                    slideIndex++;
+                }
+                @foreach (var movie in featuredMovies)
+                {
+                    <button type="button" data-bs-target="#cinemaCarousel" data-bs-slide-to="@slideIndex" class="@(slideIndex == 0 ? "active" : "")" aria-label="Slide @(slideIndex + 1)"></button>
+                    slideIndex++;
+                }
             </div>
 
-            <!-- SLIDE 2: Miercurea Cinematografică -->
-            <div class="carousel-item">
-                <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1200&auto=format&fit=crop" class="d-block w-100 carousel-img" alt="Promo Wednesday">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded-4 p-4 text-start shadow">
-                    <span class="badge bg-danger mb-2 fw-bold px-3 py-2">🔥 CINEMA CITY SPECIAL</span>
-                    <h2 class="fw-bold text-white display-6">Miercurea Cinematografică - Bilete la 15 LEI</h2>
-                    <p class="text-light fs-6 mb-3">În fiecare zi de miercuri, toate filmele 2D și 3D au un preț unic promoțional pentru toți iubitorii de film.</p>
-                    <a href="#movies-grid" class="btn btn-danger btn-sm rounded-pill px-4 fw-bold shadow-sm">
-                        Alege Filmul de Miercuri
-                    </a>
-                </div>
-            </div>
+            <div class="carousel-inner">
+                @{
+                    bool isFirst = true;
+                }
 
-            <!-- SLIDE 3: Primul film din baza de date (Dacă există) -->
-            @if (movieList.Count > 0)
-            {
-                var featuredMovie = movieList[0];
-                <div class="carousel-item">
-                    <img src="@(string.IsNullOrEmpty(featuredMovie.ImageUrl) ? "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=1200&auto=format&fit=crop" : featuredMovie.ImageUrl)" class="d-block w-100 carousel-img" alt="@featuredMovie.Title">
-                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded-4 p-4 text-start shadow">
-                        <span class="badge bg-info text-dark mb-2 fw-bold px-3 py-2">⭐ RECOMANDAREA SĂPTĂMÂNII</span>
-                        <h2 class="fw-bold text-white display-6">@featuredMovie.Title</h2>
-                        <p class="text-light fs-6 mb-3">
-                            Gen: <strong>@featuredMovie.Genre</strong> |
-                            Durată: <strong>@(featuredMovie.Duration / 60)h @(featuredMovie.Duration % 60)min</strong>
-                        </p>
-                        <a asp-action="Details" asp-route-id="@featuredMovie.Id" class="btn btn-light btn-sm rounded-pill px-4 fw-bold text-dark shadow-sm">
-                            🎟️ Cumpără Bilet / Rezervă
-                        </a>
+                <!-- 1. PROMOȚII / OFERTE -->
+                @foreach (var promo in promotions)
+                {
+                    <div class="carousel-item carousel-slide-custom @(isFirst ? "active" : "")">
+                        <img src="@promo.ImageUrl" class="d-block w-100 carousel-img" alt="@promo.Title">
+                        <div class="carousel-caption text-start p-4 p-lg-5 rounded-4 animate-caption">
+                            <span class="badge badge-cinema-orange mb-2 fw-bold px-3 py-2 rounded-pill shadow-sm">@promo.BadgeText</span>
+                            <h1 class="carousel-title text-white text-shadow mb-2">@promo.Title</h1>
+                            @if (!string.IsNullOrEmpty(promo.Subtitle))
+                            {
+                                <h4 class="carousel-subtitle text-cinema-orange fw-bold mb-3 text-shadow">@promo.Subtitle</h4>
+                            }
+                            <p class="carousel-desc text-light mb-4 text-shadow">@promo.Description</p>
+                            <a href="#movies-grid" class="btn btn-cinema-orange btn-md rounded-pill px-4 fw-bold shadow">
+                                Explore Movies & Book
+                            </a>
+                        </div>
                     </div>
-                </div>
-            }
+                    isFirst = false;
+                }
 
+                <!-- 2. FILME DIN CARUSEL (Featured Movies) -->
+                @foreach (var movie in featuredMovies)
+                {
+                    <div class="carousel-item carousel-slide-custom @(isFirst ? "active" : "")">
+                        <img src="@(string.IsNullOrEmpty(movie.ImageUrl) ? "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=1400&auto=format&fit=crop" : movie.ImageUrl)" class="d-block w-100 carousel-img" alt="@movie.Title">
+                        <div class="carousel-caption text-start p-4 p-lg-5 rounded-4 animate-caption">
+                            <span class="badge badge-cinema-orange mb-2 fw-bold px-3 py-2 rounded-pill shadow-sm">⭐ FEATURED PREMIERE</span>
+                            <h1 class="carousel-title text-white text-shadow mb-2">@movie.Title</h1>
+                            <div class="carousel-subtitle text-info fw-bold mb-3 text-shadow">
+                                Genre: @movie.Genre &bull; Duration: @(movie.Duration / 60)h @(movie.Duration % 60)m
+                            </div>
+                            <p class="carousel-desc text-light mb-4 text-shadow">
+                                Now playing in our cinemas. Explore showtimes, pick your favorite seats online, and enjoy the ultimate cinematic experience.
+                            </p>
+                            <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-light btn-md rounded-pill px-4 fw-bold text-dark shadow">
+                                🎟️ Reserve Seat Now
+                            </a>
+                        </div>
+                    </div>
+                    isFirst = false;
+                }
+
+            </div>
+
+            <!-- Săgețile de navigare (Sigure 100% albe, fără bug-uri) -->
+            <button class="carousel-control-prev custom-arrow" type="button" data-bs-target="#cinemaCarousel" data-bs-slide="prev">
+                <svg class="custom-arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+                </svg>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next custom-arrow" type="button" data-bs-target="#cinemaCarousel" data-bs-slide="next">
+                <svg class="custom-arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+                </svg>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
+    }
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#cinemaCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#cinemaCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-
-    <!-- Header-ul catalogului de filme -->
+    <!-- Secțiunea principală -->
     <div id="movies-grid" class="row mb-4 align-items-center">
         <div class="col-md-12">
-            <h1 class="display-5 fw-bold text-dark">🎬 Movies Catalog</h1>
-            <p class="text-muted fs-5">Explore our current movie selection available for online seat booking.</p>
+            <h1 class="display-5 fw-bold text-white">🎬 Now Playing & Blockbusters</h1>
+            <p class="text-secondary fs-5">Check out the hottest movies currently running and book your seats online.</p>
         </div>
     </div>
 
-    <!-- Grila de filme (Carduri moderne responsive) -->
+    <!-- Movie Cards Grid -->
     <div class="row row-cols-1 row-cols-md-3 g-4">
         @foreach (var item in Model)
         {
             <div class="col">
-                <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden movie-card">
-                    <!-- Posterul filmului cu efect de zoom la hover -->
-                    <div class="poster-container overflow-hidden position-relative" style="height: 250px;">
+                <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden movie-card text-light">
+                    <div class="poster-container overflow-hidden position-relative" style="height: 280px;">
                         <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://picsum.photos/300/200" : item.ImageUrl)"
                              class="card-img-top movie-img w-100 h-100" alt="@item.Title" style="object-fit: cover;">
                     </div>
 
                     <div class="card-body d-flex flex-column p-4">
-                        <h4 class="card-title fw-bold text-dark mb-2">@item.Title</h4>
+                        <h4 class="card-title fw-bold text-white mb-2">@item.Title</h4>
                         <div class="mb-3">
                             <span class="badge bg-secondary px-2 py-1">@item.Genre</span>
                             @{
@@ -108,15 +127,14 @@
                                 int minutes = item.Duration % 60;
                                 string formattedDuration = hours > 0 ? $"{hours}h {minutes}min" : $"{minutes}min";
                             }
-                            <span class="text-muted ms-2 small"><i class="bi bi-clock"></i> @formattedDuration</span>
+                            <span class="text-secondary ms-2 small"><i class="bi bi-clock"></i> @formattedDuration</span>
                         </div>
 
-                        <!-- Butoane de acțiune -->
-                        <div class="mt-auto pt-3 d-flex justify-content-between align-items-center border-top">
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm rounded-pill px-3 shadow-sm">
+                        <div class="mt-auto pt-3 d-flex justify-content-between align-items-center border-top border-secondary border-opacity-25">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-light btn-sm rounded-pill px-3 shadow-sm">
                                 View Details
                             </a>
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-danger btn-sm rounded-pill px-3 fw-semibold shadow-sm">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-cinema-orange btn-sm rounded-pill px-3 fw-semibold shadow-sm text-white">
                                 🎟️ Book Seat
                             </a>
                         </div>
@@ -127,23 +145,156 @@
     </div>
 </div>
 
-<!-- Stilizare CSS pentru carusel și carduri -->
+<!-- STILIZARE CINEMA CITY -->
 <style>
+    /* Săgeți de navigare curate, albe și perfect clicabile */
+    .custom-arrow {
+        z-index: 20 !important;
+        cursor: pointer;
+        width: 8%;
+        opacity: 0.8;
+        background: transparent !important;
+        border: none !important;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+        .custom-arrow:hover {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+
+    .custom-arrow-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        color: #ffffff !important;
+        filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.9));
+    }
+
+    /* Indicatorii (liniile de jos) */
+    .carousel-indicators {
+        z-index: 15;
+        margin-bottom: 1rem;
+    }
+
+        .carousel-indicators button {
+            background-color: rgba(255, 255, 255, 0.4) !important;
+            border: none !important;
+            height: 4px !important;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+            .carousel-indicators button.active {
+                background-color: #ffffff !important;
+                width: 35px !important;
+                box-shadow: 0 0 10px rgba(255, 107, 0, 0.8);
+            }
+
+    .text-cinema-orange {
+        color: #ff6b00 !important;
+    }
+
+    .btn-cinema-orange {
+        background-color: #ff6b00;
+        border-color: #ff6b00;
+        color: #fff;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .btn-cinema-orange:hover {
+            background-color: #e56000;
+            border-color: #e56000;
+            color: #fff;
+        }
+
+    .badge-cinema-orange {
+        background-color: #ff6b00;
+        color: #fff;
+    }
+
+    .carousel-slide-custom {
+        height: 480px;
+        background-color: #0b0c10;
+    }
+
     .carousel-img {
-        height: 380px;
+        height: 480px;
         object-fit: cover;
-        filter: brightness(75%);
+        filter: brightness(55%);
+        transform: scale(1);
+        transition: transform 10s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .carousel-item.active .carousel-img {
+        transform: scale(1.06);
+    }
+
+    .carousel-caption {
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 70%, rgba(0, 0, 0, 0) 100%);
+        backdrop-filter: blur(4px);
+        border-radius: 1rem;
+        bottom: 3.5rem;
+        left: 2rem;
+        right: 2rem;
+        max-width: 700px;
+        text-align: left !important;
+        z-index: 5;
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    .carousel-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        line-height: 1.2;
+    }
+
+    .carousel-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .carousel-desc {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        opacity: 0.9;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .text-shadow {
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    @@keyframes slideUpFade {
+        from {
+            opacity: 0;
+            transform: translateY(25px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .carousel-item.active .animate-caption {
+        animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     .movie-card {
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        background-color: #f8f9fa;
+        background-color: #161920 !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease;
     }
 
         .movie-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15) !important;
-            background-color: #ffffff;
+            border-color: rgba(255, 107, 0, 0.4) !important;
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.4) !important;
         }
 
     .movie-img {

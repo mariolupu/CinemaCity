@@ -8,23 +8,24 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="fw-bold text-dark">⚙️ Admin Dashboard</h1>
-            <p class="text-muted">Manage cinema movie catalog (Add, Edit, Delete).</p>
+            <p class="text-muted">Manage cinema movie catalog, showtimes, and promotional offers.</p>
         </div>
-        <div>
-            <a asp-action="Create" class="btn btn-success shadow-sm rounded-pill px-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <a asp-action="Create" class="btn btn-success shadow-sm rounded-pill px-3">
                 + Add New Movie
             </a>
-            <a asp-action="Index" class="btn btn-outline-secondary shadow-sm rounded-pill px-3 ms-2">
-                View Public Site
+            <a asp-controller="Promotions" asp-action="Index" class="btn btn-warning shadow-sm rounded-pill px-3 fw-semibold">
+                ✨ Manage Promotions
             </a>
-
-            <a asp-controller="Screenings" asp-action="Index" class="btn btn-dark rounded-pill px-4 shadow-sm">
+            <a asp-controller="Screenings" asp-action="Index" class="btn btn-dark rounded-pill px-3 shadow-sm">
                 📅 Manage Showtimes & Halls
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary shadow-sm rounded-pill px-3">
+                View Public Site
             </a>
         </div>
     </div>
 
-    <!-- Plasă de siguranță: Verificăm dacă Modelul nu este null -->
     @if (Model != null && Model.Any())
     {
         <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
@@ -36,6 +37,7 @@
                             <th>Title</th>
                             <th>Genre</th>
                             <th>Duration</th>
+                            <th>Carousel Display</th>
                             <th class="text-end pe-4">Actions</th>
                         </tr>
                     </thead>
@@ -50,6 +52,16 @@
                                 <td class="fw-bold text-dark">@item.Title</td>
                                 <td><span class="badge bg-secondary">@item.Genre</span></td>
                                 <td>@item.Duration min</td>
+                                <td>
+                                    @if (item.IsFeatured)
+                                    {
+                                        <span class="badge bg-success">⭐ In Carousel</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-light text-dark border">Standard List</span>
+                                    }
+                                </td>
                                 <td class="text-end pe-4">
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">Edit</a>
                                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info me-1">Details</a>
