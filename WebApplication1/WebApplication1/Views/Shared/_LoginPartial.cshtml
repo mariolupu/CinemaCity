@@ -6,14 +6,14 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-white fw-semibold d-flex align-items-center gap-1" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage Account">
-                <i class="bi bi-person-circle text-cinema-orange"></i>
-                <span>@User.Identity?.Name</span>
+            <a class="nav-link text-white fw-semibold d-flex align-items-center gap-1 px-2" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage Account">
+                <i class="bi bi-person-circle text-cinema-orange fs-5"></i>
+                <span class="text-light">@User.Identity?.Name</span>
             </a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="btn btn-outline-light btn-sm rounded-pill px-3 fw-semibold shadow-sm">
+                <button type="submit" class="btn btn-outline-light btn-sm rounded-1 px-3 fw-semibold shadow-sm">
                     <i class="bi bi-box-arrow-right me-1"></i> Logout
                 </button>
             </form>
@@ -22,10 +22,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-white fw-semibold" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link text-light fw-semibold px-3 hover-orange" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
         <li class="nav-item">
-            <a class="btn btn-cinema-orange btn-sm text-white fw-bold rounded-pill px-3" asp-area="Identity" asp-page="/Account/Login">
+            <a class="btn btn-cinema-orange btn-sm text-white fw-bold rounded-1 px-3" asp-area="Identity" asp-page="/Account/Login">
                 <i class="bi bi-box-arrow-in-right me-1"></i> Login
             </a>
         </li>
@@ -38,14 +38,20 @@
     }
 
     .btn-cinema-orange {
-        background-color: #ff6b00;
-        border-color: #ff6b00;
-        color: #fff;
+        background-color: #ff6b00 !important;
+        border: 1px solid #ff6b00 !important;
+        color: #ffffff !important;
+        transition: all 0.2s ease-in-out;
     }
 
         .btn-cinema-orange:hover {
-            background-color: #e56000;
-            border-color: #e56000;
-            color: #fff;
+            background-color: #e56000 !important;
+            border-color: #e56000 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.4);
         }
+
+    .hover-orange:hover {
+        color: #ff6b00 !important;
+    }
 </style>

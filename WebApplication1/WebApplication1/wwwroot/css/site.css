@@ -1,90 +1,133 @@
-/* Styling Cinema City Premium Theme */
 :root {
-    --cinema-bg: #050505;
-    --cinema-card-bg: #121418;
-    --cinema-accent: #ff6b00;
+    --bs-body-bg: #050505 !important;
+    --bs-body-color: #e5e7eb !important;
+    --bs-emphasis-color: #ffffff !important;
+    --bs-secondary-color: #9ca3af !important;
+    --bs-secondary-bg: #1a1d24 !important;
+    --bs-tertiary-bg: #12141a !important;
+    --bs-dark-rgb: 18, 20, 26 !important;
+    --bs-dark-bg-subtle: #12141a !important;
+    --bs-light-bg-subtle: #1a1d24 !important;
+    --bs-border-color: rgba(255, 255, 255, 0.1) !important;
+    --bs-border-color-translucent: rgba(255, 255, 255, 0.08) !important;
+    --bs-primary: #ff6b00 !important;
+    --bs-primary-rgb: 255, 107, 0 !important;
+    --bs-link-color: #f8f9fa !important;
+    --bs-link-hover-color: #ff6b00 !important;
 }
 
-body.cinema-theme {
-    background-color: var(--cinema-bg);
-    /* Gradient radial discret portocaliu sus în stânga/centru pe fundalul negru */
-    background-image: radial-gradient(circle at 20% 10%, rgba(255, 107, 0, 0.08) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(255, 107, 0, 0.04) 0%, transparent 40%);
-    background-attachment: fixed;
-    color: #f8f9fa;
+[data-bs-theme="dark"], body, .cinema-theme {
+    background-color: #050505 !important;
+    color: #e5e7eb !important;
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
 
-.main-wrapper {
-    flex: 1;
+.card, .marketing-box, .movie-card, .modal-content, .dropdown-menu, .offcanvas, .list-group-item {
+    background-color: #12141a !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #e5e7eb !important;
 }
 
-/* Navbar Cinema Glassmorphism */
-.navbar-cinema {
-    background: rgba(13, 15, 18, 0.85) !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+.form-control, .form-select, .input-group-text {
+    background-color: #1a1d24 !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
 }
 
-/* Stil font bloc, gros și pătrățos pentru Cinema City */
-.brand-cinema-block {
-    font-family: 'Arial Black', Impact, Gadget, sans-serif;
-    font-weight: 900;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-.brand-text {
-    letter-spacing: 1.5px;
-    font-size: 1.4rem;
-}
-
-/* Navbar Links Hover Effects */
-.navbar-dark .navbar-nav .nav-link {
-    color: rgba(255, 255, 255, 0.8);
-    transition: color 0.25s ease, transform 0.25s ease;
-}
-
-    .navbar-dark .navbar-nav .nav-link:hover {
-        color: var(--cinema-accent);
-        transform: translateY(-1px);
+    .form-control:focus,
+    .form-select:focus {
+        background-color: #1f232c !important;
+        border-color: #ff6b00 !important;
+        box-shadow: 0 0 0 0.25rem rgba(255, 107, 0, 0.25) !important;
+        color: #ffffff !important;
     }
 
-/* Carduri Adaptate la Tema Închisă */
-.movie-card {
-    background-color: var(--cinema-card-bg) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+.table {
+    --bs-table-bg: #12141a !important;
+    --bs-table-striped-bg: #161921 !important;
+    --bs-table-hover-bg: #1a1d26 !important;
+    --bs-table-border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #e5e7eb !important;
 }
 
-    .movie-card:hover {
-        border-color: rgba(255, 183, 3, 0.3) !important;
+.table-dark, thead.table-dark, tr.table-dark {
+    background-color: #1a1d24 !important;
+    color: #ffffff !important;
+}
+
+.badge.bg-secondary, .badge.bg-primary, .badge.bg-info, .badge.bg-dark {
+    background-color: #262a33 !important;
+    color: #d1d5db !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.badge-cinema-orange, .bg-cinema-orange, .btn-primary, .bg-primary {
+    background-color: #ff6b00 !important;
+    border-color: #ff6b00 !important;
+    color: #ffffff !important;
+}
+
+    .btn-primary:hover {
+        background-color: #e56000 !important;
+        border-color: #e56000 !important;
     }
 
-/* Footer Cinema */
-.cinema-footer {
-    background-color: #08090b;
+.btn-cinema-orange {
+    background-color: #ff6b00 !important;
+    border: 1px solid #ff6b00 !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease-in-out;
 }
 
-.hover-gold:hover {
-    color: var(--cinema-accent) !important;
+    .btn-cinema-orange:hover {
+        background-color: #e56000 !important;
+        border-color: #e56000 !important;
+        color: #ffffff !important;
+        box-shadow: 0 0 12px rgba(255, 107, 0, 0.4) !important;
+    }
+
+.btn-dark {
+    background-color: #1a1d24 !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
 }
 
-/* Custom Scrollbar Cinema Style */
+    .btn-dark:hover {
+        background-color: #262a33 !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+    }
+
+.text-cinema-orange, .text-info {
+    color: #ff6b00 !important;
+}
+
+a.text-info:hover {
+    color: #e56000 !important;
+}
+
+a {
+    color: #e5e7eb;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #ff6b00;
+    }
+
 ::-webkit-scrollbar {
     width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #0d0f12;
+    background: #050505;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #2a2e39;
+    background: #262a33;
     border-radius: 4px;
 }
 
     ::-webkit-scrollbar-thumb:hover {
-        background: var(--cinema-gold);
+        background: #ff6b00;
     }

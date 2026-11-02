@@ -1,64 +1,76 @@
+<!-- EDIT.CSHTML -->
 @model WebApplication1.Models.Movie
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Movie";
 }
 
-<h1>Edit</h1>
+<div class="container my-5 text-light">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card border border-secondary border-opacity-25 rounded-3 p-4 shadow-lg" style="background-color: #12141a;">
+                <h2 class="fw-bold text-white mb-3">✏️ Edit Movie</h2>
+                <hr class="border-secondary opacity-25 mb-4" />
 
-<h4>Movie</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="Id" />
 
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Genre" class="control-label"></label>
-                <input asp-for="Genre" class="form-control" />
-                <span asp-validation-for="Genre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Duration" class="control-label"></label>
-                <input asp-for="Duration" class="form-control" />
-                <span asp-validation-for="Duration" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Title" class="control-label fw-bold text-white mb-1"></label>
+                        <input asp-for="Title" class="form-control bg-dark text-white border-secondary" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
 
-            <div class="mb-3">
-                <label asp-for="Description" class="form-label fw-semibold"></label>
-                <textarea asp-for="Description" class="form-control rounded-3" rows="4"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Genre" class="control-label fw-bold text-white mb-1"></label>
+                        <input asp-for="Genre" class="form-control bg-dark text-white border-secondary" />
+                        <span asp-validation-for="Genre" class="text-danger"></span>
+                    </div>
 
-            <div class="form-check mb-3">
-                <input class="form-check-input" asp-for="IsFeatured" />
-                <label class="form-check-label fw-semibold" asp-for="IsFeatured">
-                    ⭐ Show in Main Carousel (Featured Movie)
-                </label>
-            </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="HomeSection" class="control-label fw-bold text-white mb-1">Home Section / Row Category</label>
+                        <input asp-for="HomeSection" class="form-control bg-dark text-white border-secondary" />
+                        <span asp-validation-for="HomeSection" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                    <div class="form-group mb-3">
+                        <label asp-for="Duration" class="control-label fw-bold text-white mb-1">Duration (minutes)</label>
+                        <input asp-for="Duration" class="form-control bg-dark text-white border-secondary" />
+                        <span asp-validation-for="Duration" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="ImageUrl" class="control-label fw-bold text-white mb-1">Poster Image URL</label>
+                        <input asp-for="ImageUrl" class="form-control bg-dark text-white border-secondary" />
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label fw-bold text-white mb-1"></label>
+                        <textarea asp-for="Description" class="form-control bg-dark text-white border-secondary" rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" asp-for="IsFeatured" />
+                        <label class="form-check-label fw-semibold text-white" asp-for="IsFeatured">
+                            ⭐ Display in Main Hero Carousel
+                        </label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <input type="submit" value="Save Changes" class="btn btn-primary rounded-1 px-4 fw-bold" />
+                        <a asp-action="Admin" class="btn btn-outline-secondary rounded-1 px-4">Cancel</a>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

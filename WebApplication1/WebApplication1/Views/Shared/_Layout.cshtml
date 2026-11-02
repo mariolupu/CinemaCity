@@ -6,30 +6,122 @@
     <title>@ViewData["Title"] - Cinema City</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/cinema-home.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Import font Milker -->
+    <link href="https://fonts.cdnfonts.com/css/milker" rel="stylesheet">
+
+    <style>
+            body.cinema-theme {
+                background-color: #050505 !important;
+                color: #f1f1f1 !important;
+                font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            }
+
+            /* Branding Cinema City cu fontul Milker - grosime normală / default */
+            .brand-cinema-title {
+                font-family: 'Milker', 'Impact', sans-serif;
+                font-weight: 400;
+                font-size: 1.7rem;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                line-height: 1;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+                .brand-cinema-title .brand-main {
+                    color: #ffffff;
+                }
+
+                .brand-cinema-title .brand-orange {
+                    color: #ff6b00;
+                }
+
+            .navbar-cinema {
+                background-color: #000000 !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.95);
+            }
+
+            .nav-link-cinema {
+                color: #e0e0e0 !important;
+                font-weight: 600;
+                transition: color 0.2s ease;
+            }
+
+                .nav-link-cinema:hover {
+                    color: #ff6b00 !important;
+                }
+
+            /* Admin Panel Button (Border roșu la hover, fără fundal plin) */
+            .btn-admin-panel {
+                background-color: transparent !important;
+                color: #dc3545 !important;
+                border: 1px solid #dc3545 !important;
+                font-weight: 700;
+                border-radius: 4px !important;
+                transition: all 0.2s ease-in-out;
+            }
+
+                .btn-admin-panel:hover {
+                    background-color: rgba(220, 53, 69, 0.1) !important;
+                    color: #ff4d5e !important;
+                    border-color: #ff4d5e !important;
+                    box-shadow: 0 0 10px rgba(220, 53, 69, 0.3);
+                }
+
+            .btn-cinema-orange {
+                background-color: #ff6b00 !important;
+                border: 1px solid #ff6b00 !important;
+                color: #ffffff !important;
+                font-weight: 700;
+                border-radius: 4px !important;
+                transition: all 0.2s ease-in-out;
+            }
+
+                .btn-cinema-orange:hover {
+                    background-color: #e56000 !important;
+                    border-color: #e56000 !important;
+                    color: #ffffff !important;
+                    box-shadow: 0 0 12px rgba(255, 107, 0, 0.5);
+                }
+
+            .cinema-footer {
+                background-color: #000000 !important;
+            }
+
+            .hover-orange:hover {
+                color: #ff6b00 !important;
+            }
+    </style>
 </head>
-<body class="cinema-theme text-light">
+<body class="cinema-theme text-light d-flex flex-column min-vh-100">
     <header class="sticky-top">
-        <nav class="navbar navbar-expand-sm navbar-dark navbar-cinema border-bottom border-secondary border-opacity-25 shadow-lg">
+        <nav class="navbar navbar-expand-sm navbar-dark navbar-cinema border-bottom border-secondary border-opacity-25 py-2">
             <div class="container-fluid px-4">
-                <a class="navbar-brand fw-bold d-flex align-items-center gap-2" asp-area="" asp-controller="Home" asp-action="Index">
-                    <span class="fs-3">🎬</span>
-                    <span class="brand-text brand-cinema-block text-white">CINEMA <span class="text-cinema-orange">CITY</span></span>
+                <a class="navbar-brand p-0" asp-area="" asp-controller="Home" asp-action="Index">
+                    <div class="brand-cinema-title">
+                        <span class="fs-4">🎬</span>
+                        <span class="brand-main">CINEMA</span>
+                        <span class="brand-orange">CITY</span>
+                    </div>
                 </a>
                 <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1 ms-3">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between ms-3">
+                    <ul class="navbar-nav flex-grow-1 ms-2">
                         <li class="nav-item">
-                            <a class="nav-link text-white fw-semibold px-3" asp-area="" asp-controller="Home" asp-action="Index">
+                            <a class="nav-link nav-link-cinema px-3" asp-area="" asp-controller="Home" asp-action="Index">
                                 <i class="bi bi-house-door me-1"></i> Home
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white fw-semibold px-3" asp-area="" asp-controller="Movies" asp-action="Index">
+                            <a class="nav-link nav-link-cinema px-3" asp-area="" asp-controller="Movies" asp-action="Index">
                                 <i class="bi bi-film me-1"></i> Movies
                             </a>
                         </li>
@@ -37,7 +129,7 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item ms-lg-2">
-                                <a class="nav-link btn btn-outline-danger btn-sm text-danger fw-bold px-3 rounded-pill" asp-area="" asp-controller="Movies" asp-action="Admin">
+                                <a class="nav-link btn btn-admin-panel btn-sm px-3" asp-area="" asp-controller="Movies" asp-action="Admin">
                                     <i class="bi bi-speedometer2 me-1"></i> Admin Panel
                                 </a>
                             </li>
@@ -49,7 +141,7 @@
         </nav>
     </header>
 
-    <div class="main-wrapper">
+    <div class="main-wrapper flex-grow-1">
         <main role="main" class="pb-5">
             @RenderBody()
         </main>
@@ -59,11 +151,11 @@
         <div class="container text-center">
             <div class="mb-2">
                 <span class="fw-bold text-light">🎬 CINEMA CITY</span> &bull;
-                <span class="text-cinema-orange">The Ultimate Movie Experience</span>
+                <span class="text-cinema-orange fw-semibold">The Ultimate Movie Experience</span>
             </div>
             <p class="small mb-0 text-secondary">
                 &copy; 2026 Cinema City Entertainment. All rights reserved. &bull;
-                <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-decoration-none text-secondary hover-gold">Privacy Policy</a>
+                <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-decoration-none text-secondary hover-orange">Privacy Policy</a>
             </p>
         </div>
     </footer>

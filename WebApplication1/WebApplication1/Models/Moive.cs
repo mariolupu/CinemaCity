@@ -1,5 +1,4 @@
-﻿// Barem: Nota 3, Criteriul 01 - Utilizarea claselor
-namespace WebApplication1.Models
+﻿namespace WebApplication1.Models
 {
     public class Movie
     {
@@ -9,9 +8,13 @@ namespace WebApplication1.Models
         public int Duration { get; set; }
         public string? ImageUrl { get; set; }
 
-        // Câmpul nou pentru descriere
+        // Câmpul pentru descriere
         public string? Description { get; set; }
 
         public bool IsFeatured { get; set; } = false;
+
+        // Câmp nou: Rândul/Secțiunea de pe pagina principală (controlat de admin)
+        // Exemplu valori: "Comedii", "SF & Action", "Trending"
+        public string? HomeSection { get; set; }
     }
 }

@@ -4,35 +4,32 @@
     ViewData["Title"] = "Movies Catalog";
 }
 
-<!-- Barem: Nota 2 & 4 - Catalogul public de filme pentru clienți (Client UI) -->
-<div class="container my-5">
+<div class="container my-5 text-light">
     <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-dark">🎬 Now Playing in Cinemas</h1>
-        <p class="text-muted lead">Choose your favorite movie and book your tickets instantly.</p>
+        <h1 class="display-4 fw-bold text-white">🎬 Now Playing in Cinema City</h1>
+        <p class="text-secondary lead">Choose your movie, pick your showtime, and reserve your seats online.</p>
     </div>
 
-    <!-- Grila de filme pentru clienți -->
     <div class="row row-cols-1 row-cols-md-3 g-4">
         @if (Model != null && Model.Any())
         {
             @foreach (var item in Model)
             {
                 <div class="col">
-                    <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden movie-card">
+                    <div class="card h-100 shadow-lg border border-secondary border-opacity-25 rounded-3 overflow-hidden movie-card" style="background-color: #161920;">
                         <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://picsum.photos/300/200" : item.ImageUrl)"
                              class="card-img-top" alt="@item.Title" style="height: 280px; object-fit: cover;">
 
                         <div class="card-body d-flex flex-column p-4">
-                            <h4 class="card-title fw-bold text-dark mb-2">@item.Title</h4>
+                            <h4 class="card-title fw-bold text-white mb-2">@item.Title</h4>
                             <div class="mb-3">
-                                <span class="badge bg-primary px-2 py-1">@item.Genre</span>
-                                <span class="text-muted ms-2 small"><i class="bi bi-clock"></i> @item.Duration min</span>
+                                <span class="badge bg-secondary px-2 py-1">@item.Genre</span>
+                                <span class="text-secondary ms-2 small"><i class="bi bi-clock me-1"></i>@item.Duration min</span>
                             </div>
 
-                            <!-- Butonul dedicat clientului (Detalii / Rezervare) -->
                             <div class="mt-auto pt-3">
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-dark w-100 rounded-pill fw-semibold">
-                                    View Details & Book
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-cinema-orange w-100 rounded-1 fw-bold shadow-sm">
+                                    🎟️ Book Seat / Details
                                 </a>
                             </div>
                         </div>
@@ -43,9 +40,9 @@
         else
         {
             <div class="col-12 text-center py-5">
-                <div class="alert alert-info py-4 rounded-4 shadow-sm">
-                    <h4>No movies available at the moment.</h4>
-                    <p class="text-muted mb-0">Please check back later or add movies from the Admin Panel.</p>
+                <div class="alert alert-dark py-4 rounded-3 border border-secondary border-opacity-25 shadow-sm">
+                    <h4 class="text-white">No movies available at the moment.</h4>
+                    <p class="text-secondary mb-0">Please check back later or add new entries from the Admin Panel.</p>
                 </div>
             </div>
         }
@@ -53,12 +50,26 @@
 </div>
 
 <style>
+    .btn-cinema-orange {
+        background-color: #ff6b00 !important;
+        border: 1px solid #ff6b00 !important;
+        color: #ffffff !important;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .btn-cinema-orange:hover {
+            background-color: #e56000 !important;
+            border-color: #e56000 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 12px rgba(255, 107, 0, 0.4);
+        }
+
     .movie-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: transform 0.3s ease, border-color 0.3s ease;
     }
 
         .movie-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1) !important;
+            border-color: rgba(255, 107, 0, 0.5) !important;
         }
 </style>

@@ -1,0 +1,252 @@
+﻿/* Anti-Aliasing și Smooth Rendering */
+.smooth-render, img, svg {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: smooth;
+    shape-rendering: geometricPrecision;
+}
+
+/* Fundal general bogat */
+.main-cinema-bg {
+    background-color: #050507;
+}
+
+/* Cercuri luminoase mari și mici difuze în fundal (Spotlight-uri de cinema multiple) */
+.cinema-spotlight {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.spotlight-1 {
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 950px;
+    height: 750px;
+    background: radial-gradient(circle, rgba(255, 110, 0, 0.22) 0%, rgba(255, 190, 120, 0.08) 35%, rgba(10, 10, 12, 0) 75%);
+    filter: blur(70px);
+}
+
+.spotlight-2 {
+    top: 5%;
+    left: -100px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(255, 230, 210, 0.13) 0%, rgba(255, 107, 0, 0.12) 40%, rgba(5, 5, 5, 0) 70%);
+    filter: blur(85px);
+}
+
+.spotlight-3 {
+    top: 15%;
+    right: -150px;
+    width: 750px;
+    height: 750px;
+    background: radial-gradient(circle, rgba(255, 120, 15, 0.17) 0%, rgba(255, 210, 150, 0.05) 50%, rgba(5, 5, 5, 0) 75%);
+    filter: blur(90px);
+}
+
+.spotlight-4 {
+    top: 42%;
+    left: 10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 95, 0, 0.14) 0%, rgba(255, 240, 220, 0.04) 45%, rgba(5, 5, 5, 0) 70%);
+    filter: blur(95px);
+}
+
+.spotlight-5 {
+    top: 50%;
+    right: 5%;
+    width: 650px;
+    height: 650px;
+    background: radial-gradient(circle, rgba(255, 240, 230, 0.11) 0%, rgba(255, 110, 0, 0.13) 40%, rgba(5, 5, 5, 0) 75%);
+    filter: blur(85px);
+}
+
+.spotlight-6 {
+    bottom: 10%;
+    left: -100px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(255, 100, 0, 0.16) 0%, rgba(255, 220, 180, 0.06) 45%, rgba(5, 5, 5, 0) 75%);
+    filter: blur(100px);
+}
+
+.spotlight-7 {
+    bottom: -50px;
+    right: 15%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(255, 130, 20, 0.15) 0%, rgba(255, 250, 240, 0.05) 40%, rgba(5, 5, 5, 0) 70%);
+    filter: blur(90px);
+}
+
+.spotlight-8 {
+    top: 30%;
+    left: 45%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(255, 107, 0, 0.1) 0%, rgba(255, 200, 150, 0.03) 50%, rgba(5, 5, 5, 0) 80%);
+    filter: blur(110px);
+}
+
+.movie-slider-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.movie-horizontal-slider {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+    .movie-horizontal-slider::-webkit-scrollbar {
+        display: none;
+    }
+
+/* Săgeți fixate aproape de marginile tabului & ascunse la capete */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) translateZ(0);
+    z-index: 25;
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.45);
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s ease, opacity 0.25s ease, color 0.2s ease, visibility 0.25s ease;
+    opacity: 0.85;
+}
+
+    .slider-arrow.is-hidden {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+    }
+
+    .slider-arrow:hover {
+        opacity: 1;
+        color: #ff6b00;
+        transform: translateY(-50%) scale(1.15) translateZ(0);
+    }
+
+.slider-arrow-icon {
+    width: 22px;
+    height: 44px;
+    filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.8));
+}
+
+.slider-arrow-left {
+    left: -28px;
+}
+
+.slider-arrow-right {
+    right: -28px;
+}
+
+/* Carusel Promovare Hero */
+.hero-tall {
+    max-height: 540px;
+}
+
+.carousel-slide-custom {
+    height: 520px;
+    background: linear-gradient(135deg, #0e0906 0%, #050505 50%, #140b05 100%) !important;
+}
+
+.carousel-img-wrapper {
+    position: relative;
+    height: 520px;
+    width: 100%;
+}
+
+    .carousel-img-wrapper::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(255,107,0,0.06) 45%, rgba(5,5,5,0.5) 100%);
+        pointer-events: none;
+    }
+
+.carousel-img {
+    height: 520px;
+    object-fit: cover;
+    filter: brightness(65%) contrast(105%);
+    transform: translateZ(0);
+}
+
+/* Indicatori albi */
+.carousel-indicators [data-bs-target] {
+    background-color: #ffffff !important;
+    opacity: 0.4;
+    border: none;
+    height: 3px;
+    border-radius: 2px;
+    transition: opacity 0.3s ease, width 0.3s ease;
+}
+
+.carousel-indicators .active {
+    opacity: 1 !important;
+    width: 32px !important;
+    box-shadow: 0 0 10px rgba(255, 107, 0, 0.9);
+}
+
+.custom-arrow {
+    z-index: 20 !important;
+    cursor: pointer;
+    width: 6%;
+    opacity: 0.65;
+    background: transparent !important;
+    border: none !important;
+    transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+    .custom-arrow:hover {
+        opacity: 1;
+        color: #ff6b00 !important;
+        transform: scale(1.1) translateZ(0);
+    }
+
+.custom-arrow-icon {
+    width: 1.8rem;
+    height: 3.2rem;
+    filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.95));
+}
+
+.marketing-box {
+    background-color: rgba(18, 20, 26, 0.85) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 107, 0, 0.25) !important;
+    border-radius: 4px !important;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+    .marketing-box:hover {
+        transform: translateY(-5px);
+        border-color: #ff6b00 !important;
+        box-shadow: 0 0.5rem 1.5rem rgba(255, 107, 0, 0.15);
+    }
+
+/* Movie Card cu Border vizibil complet pe 4 laturi (inclusiv sus) */
+.movie-card {
+    background-color: rgba(18, 20, 26, 0.9) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 6px !important;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease;
+    transform: translateZ(0);
+    overflow: visible !important;
+}
+
+    .movie-card:hover {
+        transform: translateY(-5px) translateZ(0);
+        border-color: #ff6b00 !important;
+        box-shadow: 0 0 12px rgba(255, 107, 0, 0.5), 0 1rem 2rem rgba(0, 0, 0, 0.6) !important;
+    }

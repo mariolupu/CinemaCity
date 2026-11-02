@@ -4,23 +4,23 @@
     ViewData["Title"] = "Admin Dashboard - Movies";
 }
 
-<div class="container my-5">
+<div class="container my-5 text-light">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="fw-bold text-dark">⚙️ Admin Dashboard</h1>
-            <p class="text-muted">Manage cinema movie catalog, showtimes, and promotional offers.</p>
+            <h1 class="fw-bold text-white mb-1">⚙️ Admin Dashboard</h1>
+            <p class="text-secondary">Manage movie catalog, showtimes, and promotional offers.</p>
         </div>
         <div class="d-flex gap-2 flex-wrap">
-            <a asp-action="Create" class="btn btn-success shadow-sm rounded-pill px-3">
+            <a asp-action="Create" class="btn btn-success shadow-sm rounded-1 px-3 fw-semibold">
                 + Add New Movie
             </a>
-            <a asp-controller="Promotions" asp-action="Index" class="btn btn-warning shadow-sm rounded-pill px-3 fw-semibold">
+            <a asp-controller="Promotions" asp-action="Index" class="btn btn-warning shadow-sm rounded-1 px-3 fw-bold text-dark">
                 ✨ Manage Promotions
             </a>
-            <a asp-controller="Screenings" asp-action="Index" class="btn btn-dark rounded-pill px-3 shadow-sm">
-                📅 Manage Showtimes & Halls
+            <a asp-controller="Screenings" asp-action="Index" class="btn btn-outline-light rounded-1 px-3 shadow-sm">
+                📅 Manage Showtimes
             </a>
-            <a asp-action="Index" class="btn btn-outline-secondary shadow-sm rounded-pill px-3">
+            <a asp-action="Index" class="btn btn-outline-secondary shadow-sm rounded-1 px-3">
                 View Public Site
             </a>
         </div>
@@ -28,17 +28,18 @@
 
     @if (Model != null && Model.Any())
     {
-        <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card border border-secondary border-opacity-25 rounded-3 overflow-hidden shadow-lg" style="background-color: #12141a;">
             <div class="card-body p-0">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-dark">
-                        <tr>
-                            <th class="ps-4">Poster</th>
-                            <th>Title</th>
-                            <th>Genre</th>
-                            <th>Duration</th>
-                            <th>Carousel Display</th>
-                            <th class="text-end pe-4">Actions</th>
+                <table class="table table-dark table-hover align-middle mb-0">
+                    <thead style="background-color: #1a1d26;">
+                        <tr class="text-secondary">
+                            <th class="ps-4 py-3">Poster</th>
+                            <th class="py-3">Title</th>
+                            <th class="py-3">Genre</th>
+                            <th class="py-3">Home Section</th>
+                            <th class="py-3">Duration</th>
+                            <th class="py-3">Carousel Display</th>
+                            <th class="text-end pe-4 py-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,25 +48,35 @@
                             <tr>
                                 <td class="ps-4 py-3">
                                     <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://picsum.photos/50/50" : item.ImageUrl)"
-                                         class="rounded" style="width: 50px; height: 50px; object-fit: cover;" />
+                                         class="rounded-1" style="width: 45px; height: 55px; object-fit: cover;" />
                                 </td>
-                                <td class="fw-bold text-dark">@item.Title</td>
-                                <td><span class="badge bg-secondary">@item.Genre</span></td>
-                                <td>@item.Duration min</td>
+                                <td class="fw-bold text-white">@item.Title</td>
+                                <td><span class="badge bg-secondary px-2 py-1">@item.Genre</span></td>
                                 <td>
-                                    @if (item.IsFeatured)
+                                    @if (!string.IsNullOrEmpty(item.HomeSection))
                                     {
-                                        <span class="badge bg-success">⭐ In Carousel</span>
+                                        <span class="badge bg-cinema-orange px-2 py-1">@item.HomeSection</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-light text-dark border">Standard List</span>
+                                        <span class="text-secondary fst-italic small">Standard</span>
+                                    }
+                                </td>
+                                <td class="text-light">@item.Duration min</td>
+                                <td>
+                                    @if (item.IsFeatured)
+                                    {
+                                        <span class="badge bg-success px-2 py-1">⭐ In Carousel</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-dark text-secondary border border-secondary px-2 py-1">Standard List</span>
                                     }
                                 </td>
                                 <td class="text-end pe-4">
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">Edit</a>
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info me-1">Details</a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary rounded-1 me-1">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info rounded-1 me-1">Details</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger rounded-1">Delete</a>
                                 </td>
                             </tr>
                         }
@@ -76,10 +87,17 @@
     }
     else
     {
-        <div class="alert alert-warning text-center p-4 rounded-4 shadow-sm">
-            <h4>No movies found in the database.</h4>
-            <p class="text-muted mb-3">Click the button below to add your first movie.</p>
-            <a asp-action="Create" class="btn btn-primary rounded-pill px-4">+ Add New Movie</a>
+        <div class="alert alert-dark text-center p-5 rounded-3 border border-secondary border-opacity-25 shadow-sm">
+            <h4 class="text-white mb-2">No movies found in database</h4>
+            <p class="text-secondary mb-3">Click below to create your first movie entry.</p>
+            <a asp-action="Create" class="btn btn-success rounded-1 px-4">+ Add New Movie</a>
         </div>
     }
 </div>
+
+<style>
+    .bg-cinema-orange {
+        background-color: #ff6b00 !important;
+        color: #ffffff !important;
+    }
+</style>
